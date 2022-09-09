@@ -52,14 +52,12 @@ public struct WebImage : View {
         }
         self.imageManager = ImageManager(url: url, options: options, context: context)
         self.imagePlayer = ImagePlayer()
+        
+        imageManager.load()
     }
     
     public var body: some View {
-        // This solve the case when WebImage created with new URL, but `onAppear` not been called, for example, some transaction indeterminate state, SwiftUI :)
-        if imageManager.isFirstLoad {
-            imageManager.load()
-        }
-        return Group {
+        Group {
             if let image = imageManager.image {
                 if isAnimating && !imageManager.isIncremental {
                     setupPlayer()
